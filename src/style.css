@@ -1,0 +1,173 @@
+@font-face {
+    font-family: 'MyFont';
+    src: url('./RonysiswadiArchitect6-X3V9G.ttf') format('woff');
+    font-weight: 600;
+    font-style: normal;
+  }
+@font-face {
+    font-family: 'MyFont1';
+    src: url('./SparkyStonesRegular-BW6ld.ttf') format('woff');
+    font-weight: 600;
+    font-style: normal;
+  }
+@font-face {
+    font-family: 'MyFont2';
+    src: url('./Turpis-GOgVm.ttf') format('woff');
+    font-weight: 600;
+    font-style: normal;
+  }
+
+body, html {
+    width: 100vw;
+    height: 100vh;
+    font-family: 'MyFont';
+    margin: 0;
+}
+:root {
+    font-size: 16px;
+    font-family: 'MyFont';
+    font-weight: 400;
+}
+.header {
+    width: 100%;
+    height: 7vh;
+    background-color: skyblue;
+}
+.container {
+    display: flex;
+}
+.sidebar {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 8vh);
+    gap: 3vh;
+    flex-basis: 30%;
+    background: rgba(135, 207, 235, 0.322);
+    height: 93vh;
+    justify-content: center;
+}
+.projectdiv {
+    width: 20vw;
+    background: transparent;
+    font-size: 1.4rem;
+    text-align: left;
+    border: none;
+}
+.projectdiv:hover {
+    background: rgba(135, 207, 235, 0.622);
+}
+
+h1 {
+    border-bottom: thin solid rgba(135, 207, 235, 0.322);
+    grid-row-start: span 3;
+}
+.maincontent {
+    display: grid;
+    flex-basis: 70%;
+    grid-auto-rows: 5vh;
+    justify-content: center;
+    gap: 0.5vh;
+}
+.tododiv {
+    width: 50vw;
+    font-size: 1rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    gap: 0.5vw;
+    font-weight: 200;
+    align-items: center;
+    border-bottom: thin solid rgba(135, 207, 235, 0.322);
+}
+.delbtn, .editbtn {
+    display: flex;
+    border: none;
+    background: transparent;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    align-self: center;
+    opacity: 0.7;
+
+}
+.delbtn {
+    background: url(./delete.png);
+    background-size: cover;
+    border: none;
+
+}
+.editbtn {
+    background-image: url(./edit.png);
+    background-size: cover;
+    border: none;
+}
+.form {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    grid-row-end: span 5;
+    width: 50vw;
+    font-size: 1.3rem;
+    align-self: center;
+    display: grid;
+    grid-template-rows: repeat(4, 5vh);
+    margin: auto;
+  }
+#formTitle {
+    grid-row: 2;
+}
+#formDate, .priorityLabel {
+    grid-row: 4;
+}
+.lowprio {
+    color: green;
+}
+.mediumprio {
+    color: darkorange;
+}
+.highprio {
+    color: red;
+}
+.tododiv.form {
+    border: none;
+    margin: 0;
+}
+button {
+    font-family: 'MyFont1';
+}
+div.dueDate, div.titlediv {
+    display: flex;
+    font-size: 14px;
+    text-align:center;
+    padding: 0.6vw;
+    padding-bottom: 0.3vw;
+}
+
+div.completed {
+    text-decoration: line-through;
+    opacity: 0.4;
+}
+div.titlediv {
+    font-size: 3vh;
+}
+.checkbox {
+    width: 2.5vh;
+    height: 2.5vh;
+}
+input[type="checkbox"] {
+    /* ...existing styles */
+    display: grid;
+    place-content: center;
+    size: 200%;
+  }
+  
+  input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    background: purple;
+  }
+  
+  input[type="checkbox"]:checked::before {
+    transform: scale(1);
+  }
