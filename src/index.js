@@ -5,11 +5,10 @@ import { createForm } from './forms';
 import { addtodo, getTodo } from './Gameboard';
 
 
-addtodo('project', 'title', 'dueDate','priority');
-addtodo('project', 'title1', 'dueDate1','priority1');
-addtodo('project1', 'title', 'dueDate','priority',);
-addtodo('project3', 'title', 'dueDate','priority');
-addtodo('project5')
+addtodo('project','asdsdsad', '2023-07-01', 'Low', 5);
+addtodo('project','asdsdsad', '2023-07-21', 'Low', 5);
+addtodo('project','asdsdsdasasad', '2023-07-11', 'Low', 5);
+
 baseDOM();
 //rendertodos();
 createForm();

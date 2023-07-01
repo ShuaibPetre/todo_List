@@ -59,6 +59,8 @@ body, html {
 h1 {
     border-bottom: thin solid rgba(135, 207, 235, 0.322);
     grid-row-start: span 3;
+    display: flex;
+    justify-content: space-between;
 }
 .maincontent {
     display: grid;
@@ -171,3 +173,10 @@ input[type="checkbox"] {
   input[type="checkbox"]:checked::before {
     transform: scale(1);
   }
+  .sortbtn {
+    background: none;
+    border: none;
+    appearance: none;
+  }
+  
+
