@@ -39,25 +39,28 @@ const index = i
 const completed = false
 const todo = new toDo(project, title, dueDate,priority, index);
 projects.push(todo);
+storage()
 }
 function editcompleted (index,value) {
     projects[index].completed = value;
+    storage();
 }
 function editTodo (project, title, dueDate, priority, index) {
     const todo = new toDo(project, title, dueDate,priority, index);
     projects.splice(index, 1, todo);
+    storage();
 }
 function delTodo(thisindex) {
     projects.splice(thisindex, 1)
     for (let i = 0; i < projects.length; i += 1) {
         var ind = i;  
-        projects[i].index = ind
+        projects[i].index = ind;
+        storage();
     }
 }
 function sortAsc() {
     function geeks_outer() {
-        projects.sort(GFG_sortFunction);
-        console.log(JSON.stringify(projects));  
+        projects.sort(GFG_sortFunction); 
     }
     function GFG_sortFunction(a, b) {
         let dateA = new Date(a.dueDate).getTime();
@@ -68,8 +71,7 @@ function sortAsc() {
 };
 function sortDesc() {
     function geeks_outer() {
-        projects.sort(GFG_sortFunction);
-        console.log(JSON.stringify(projects));  
+        projects.sort(GFG_sortFunction);  
     }
     function GFG_sortFunction(a, b) {
         let dateA = new Date(a.dueDate).getTime();
@@ -78,4 +80,22 @@ function sortDesc() {
     };
     geeks_outer();
 }
-export {addtodo, getTodo, editTodo, editcompleted, delTodo, sortAsc, sortDesc}
+function callstorage() {
+    var datas = JSON.parse(localStorage["projects"]); 
+    for (let i = 0; i < datas.length; i += 1) {
+    if (datas[i] === undefined) return
+    var project = datas[i].project;
+    var title = datas[i].title
+    var dueDate =datas[i].dueDate
+    var priority = datas[i].priority
+    addtodo(project, title, dueDate,priority);
+    console.log(datas[i])
+    }
+    console.log(projects)
+}
+function storage() {
+    localStorage.setItem("projects", JSON.stringify(projects));
+    var jsontodos = JSON.parse(localStorage.getItem("projects") || "[]");
+    console.log (jsontodos)
+}
+export {addtodo, getTodo, editTodo, editcompleted, delTodo, sortAsc, sortDesc,callstorage}

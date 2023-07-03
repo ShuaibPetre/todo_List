@@ -50,7 +50,7 @@ function renderprojects() {
     sidebar.appendChild(todaydiv);
 
     const weekdiv = document.createElement('BUTTON');
-    weekdiv.textContent = "HOME"
+    weekdiv.textContent = "WEEK"
     weekdiv.classList.add('weekdiv')
     weekdiv.setAttribute("id", "weekdiv");
     weekdiv.addEventListener('click', timesort, false)
@@ -58,17 +58,23 @@ function renderprojects() {
     weekdiv.id = 'WEEK'
     sidebar.appendChild(weekdiv);
 
+    // const addProject = document.createElement('BUTTON');
+    // addProject.textContent = "addProject"
+    // addProject.setAttribute("id", "addProject");
+    // addProject.addEventListener('click', addproject, false)
+    // sidebar.appendChild(addProject);
+
     var out = todos.reduce(function (p, c) {
     if (!p.some(function (el) { return el.project === c.project; })) p.push(c);
     return p;
   }, []);
-
     out.sort(function(a, b) {
+ 
+    if (textA === undefined || textB === undefined) return
     var textA = a.project.toUpperCase();
     var textB = b.project.toUpperCase();
     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
 });
-
 for (let i = 0; i < out.length; i += 1) {
     const projectdiv = document.createElement('BUTTON');
     projectdiv.textContent = out[i].project
@@ -352,4 +358,11 @@ function timesort() {
 
     console.log(lastProject)
 }
+// function addproject() {
+//     const main = document.querySelector('maincontainer');
+//     var currentForm = document.querySelector('#currentform')
+//     if ( currentForm !== null) return alert('Please close other form.');
+//     const form = createForm()
+//     main.appendChild(form)
+// }
 export {baseDOM, rendertodos, cancel, submit}
