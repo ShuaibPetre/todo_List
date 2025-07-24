@@ -6,6 +6,6 @@ import { addtodo, callstorage, getTodo } from './Gameboard';
 
 callstorage();
 baseDOM();
-
+rendertodos();
 console.log(getTodo())
 

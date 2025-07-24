@@ -81,18 +81,37 @@ function sortDesc() {
     geeks_outer();
 }
 function callstorage() {
-    var datas = JSON.parse(localStorage["projects"]); 
-    for (let i = 0; i < datas.length; i += 1) {
-    if (datas[i] === undefined) return
-    var project = datas[i].project;
-    var title = datas[i].title
-    var dueDate =datas[i].dueDate
-    var priority = datas[i].priority
-    addtodo(project, title, dueDate,priority);
-    console.log(datas[i])
-    }
-    console.log(projects)
+  const raw = localStorage.getItem("projects");
+
+  if (!raw || raw === "undefined") {
+    console.warn("⚠️ No valid project data found in localStorage.");
+    return;
+  }
+
+  let datas;
+  try {
+    datas = JSON.parse(raw);
+  } catch (e) {
+    console.error("❌ JSON parsing failed:", e);
+    return;
+  }
+
+  if (!Array.isArray(datas)) {
+    console.warn("⚠️ Data is not an array:", datas);
+    return;
+  }
+
+  for (let i = 0; i < datas.length; i++) {
+    if (datas[i] === undefined) continue;
+
+    const { project, title, dueDate, priority } = datas[i];
+    addtodo(project, title, dueDate, priority);
+    console.log(datas[i]);
+  }
+
+  console.log(projects);
 }
+
 function storage() {
     localStorage.setItem("projects", JSON.stringify(projects));
     var jsontodos = JSON.parse(localStorage.getItem("projects") || "[]");

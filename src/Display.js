@@ -1,170 +1,177 @@
+
 import { addtodo, delTodo, editcompleted, editTodo, getTodo, sortAsc, sortDesc } from "./Gameboard";
 import { createForm } from "./forms"
 import _ from 'lodash';
 import './style.css';
-var sortstyle = 'asc';
+
+let sortstyle = 'asc';
 const todos = getTodo();
 let lastProject = '';
 
 function baseDOM() {
-document.body.replaceChildren();
-const header = document.createElement('div')
-header.classList.add('header');
-header.textContent = 'TO-DO List'
-document.body.appendChild(header)
+  document.body.replaceChildren();
 
-const container = document.createElement('div');
-container.classList.add('container')
-document.body.appendChild(container);
+  const header = document.createElement('div');
+  header.classList.add('header');
+  header.textContent = 'TO-DO List';
+  document.body.appendChild(header);
 
-const sidebar = document.createElement('div');
-sidebar.classList.add('sidebar');
-container.appendChild(sidebar);
+  const container = document.createElement('div');
+  container.classList.add('container');
+  document.body.appendChild(container);
 
-const maincontent = document.createElement('div');
-maincontent.classList.add('maincontent');
-container.appendChild(maincontent);
-renderprojects();
-};
+  const sidebar = document.createElement('div');
+  sidebar.classList.add('sidebar');
+  container.appendChild(sidebar);
+
+  const taskGroup = document.createElement('div');
+  taskGroup.classList.add('task-group');
+  sidebar.appendChild(taskGroup);
+
+  const maincontent = document.createElement('div');
+  maincontent.classList.add('maincontent');
+  container.appendChild(maincontent);
+
+  renderprojects();
+}
 
 function renderprojects() {
-    var sidebar = document.querySelector('.sidebar')
-    sidebar.replaceChildren();
+  const sidebar = document.querySelector('.sidebar');
+  sidebar.replaceChildren();
 
-    const HOMEdiv = document.createElement('BUTTON');
-    HOMEdiv.textContent = "HOME"
-    HOMEdiv.classList.add('HOME')
-    HOMEdiv.setAttribute("id", "HOME");
-    HOMEdiv.addEventListener('click', timesort, false)
-    HOMEdiv.value = 'HOME';
-    HOMEdiv.id = 'HOME'
-    sidebar.appendChild(HOMEdiv);
+  const taskGroup = document.createElement('div');
+  taskGroup.classList.add('task-group');
+  sidebar.appendChild(taskGroup);
 
-    const todaydiv = document.createElement('BUTTON');
-    todaydiv.textContent = "TODAY"
-    todaydiv.classList.add('todaydiv')
-    todaydiv.setAttribute("id", "todaydiv");
-    todaydiv.addEventListener('click', timesort, false)
-    todaydiv.value = 'TODAY';
-    todaydiv.id = 'TODAY'
-    sidebar.appendChild(todaydiv);
+  const home = document.createElement('button');
+  home.textContent = 'Home';
+  home.classList.add('tab-btn');
+  home.id = 'HOME';
+  home.value = 'HOME';
+  home.addEventListener('click', timesort);
+  taskGroup.appendChild(home);
 
-    const weekdiv = document.createElement('BUTTON');
-    weekdiv.textContent = "WEEK"
-    weekdiv.classList.add('weekdiv')
-    weekdiv.setAttribute("id", "weekdiv");
-    weekdiv.addEventListener('click', timesort, false)
-    weekdiv.value = 'WEEK';
-    weekdiv.id = 'WEEK'
-    sidebar.appendChild(weekdiv);
+  const today = document.createElement('button');
+  today.textContent = 'Today';
+  today.classList.add('tab-btn');
+  today.id = 'TODAY';
+  today.value = 'TODAY';
+  today.addEventListener('click', timesort);
+  taskGroup.appendChild(today);
 
-    // const addProject = document.createElement('BUTTON');
-    // addProject.textContent = "addProject"
-    // addProject.setAttribute("id", "addProject");
-    // addProject.addEventListener('click', addproject, false)
-    // sidebar.appendChild(addProject);
+  const week = document.createElement('button');
+  week.textContent = 'Week';
+  week.classList.add('tab-btn');
+  week.id = 'WEEK';
+  week.value = 'WEEK';
+  week.addEventListener('click', timesort);
+  taskGroup.appendChild(week);
 
-    var out = todos.reduce(function (p, c) {
-    if (!p.some(function (el) { return el.project === c.project; })) p.push(c);
-    return p;
+  const addProject = document.createElement('button');
+  addProject.textContent = '+ Add Project';
+  addProject.id = 'addProject';
+  addProject.classList.add('add-project-btn');
+  addProject.addEventListener('click', addproject);
+  sidebar.appendChild(addProject);
+  
+
+  const categories = todos.reduce((acc, todo) => {
+    if (!acc.some(el => el.project === todo.project)) acc.push(todo);
+    return acc;
   }, []);
-    out.sort(function(a, b) {
- 
-    if (textA === undefined || textB === undefined) return
-    var textA = a.project.toUpperCase();
-    var textB = b.project.toUpperCase();
-    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-});
-for (let i = 0; i < out.length; i += 1) {
-    const projectdiv = document.createElement('BUTTON');
-    projectdiv.textContent = out[i].project
-    projectdiv.classList.add('projectdiv')
-    projectdiv.addEventListener('click', rendertodos, false)
-    projectdiv.value = out[i].project;
-    projectdiv.id = out[i].project
-    sidebar.appendChild(projectdiv);
-};
+
+  categories.sort((a, b) => a.project.localeCompare(b.project));
+
+  categories.forEach(category => {
+    const projectBtn = document.createElement('button');
+    projectBtn.textContent = category.project;
+    projectBtn.classList.add('category-btn');
+    projectBtn.value = category.project;
+    projectBtn.id = category.project;
+    projectBtn.addEventListener('click', rendertodos);
+    sidebar.appendChild(projectBtn);
+  });
 }
 
 function rendertodos() {
-    const maincontent = document.querySelector('.maincontent')
-    maincontent.replaceChildren();
-    sortfunc(); 
+  const maincontent = document.querySelector('.maincontent');
+  maincontent.replaceChildren();
+  sortfunc();
 
-    const heading = document.createElement('h1');
-    if (heading.value !== "") {
-        heading.textContent = this.value.toUpperCase();
-        lastProject = this.value 
+  const heading = document.createElement('h1');
+  if (heading.value !== '') {
+    heading.textContent = this.value.toUpperCase();
+    lastProject = this.value;
+  }
+
+  const sortbtn = document.createElement('button');
+  sortbtn.textContent = sortstyle === 'asc' ? 'Ascending' : 'Descending';
+  sortbtn.classList.add('sortbtn');
+  sortbtn.addEventListener('click', sortswap);
+  heading.appendChild(sortbtn);
+
+  maincontent.replaceChildren(heading);
+
+  todos.forEach(todo => {
+    if (todo.project === lastProject) {
+      const tododiv = document.createElement('div');
+      tododiv.classList.add('tododiv');
+      tododiv.id = todo.index;
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.classList.add('checkbox');
+      checkbox.addEventListener('click', changecompleted);
+      tododiv.appendChild(checkbox);
+
+      const titlediv = document.createElement('div');
+      titlediv.textContent = todo.title;
+      titlediv.classList.add('titlediv');
+      tododiv.appendChild(titlediv);
+
+      const timeTodo = document.createElement('div');
+      timeTodo.textContent = todo.date;
+      timeTodo.classList.add('dueDate');
+
+      const prio = todo.priority;
+      if (prio === 'Low') timeTodo.classList.add('lowprio');
+      if (prio === 'Medium') timeTodo.classList.add('mediumprio');
+      if (prio === 'High') timeTodo.classList.add('highprio');
+      tododiv.appendChild(timeTodo);
+
+      const editBtn = document.createElement('button');
+      editBtn.classList.add('editbtn');
+      editBtn.textContent = 'Edit';
+      editBtn.addEventListener('click', editform);
+      tododiv.appendChild(editBtn);
+
+      const delBtn = document.createElement('button');
+      delBtn.classList.add('delbtn');
+      delBtn.textContent = 'Delete';
+      delBtn.addEventListener('click', submitdel);
+      tododiv.appendChild(delBtn);
+
+      maincontent.appendChild(tododiv);
     }
+  });
 
-    const sortbtn = document.createElement('BUTTON');
-    if (sortstyle === 'asc') sortbtn.textContent = 'ASCENDING';
-    if (sortstyle === 'desc') sortbtn.textContent = 'DESCENDING';
-    sortbtn.classList.add('sortbtn');
-    sortbtn.addEventListener('click', sortswap, false);
-    heading.appendChild(sortbtn);
-
-    maincontent.replaceChildren(heading)
-    for (let i = 0; i < todos.length; i += 1) {
-
-        if (todos[i].project === lastProject) {
-        const tododiv = document.createElement('div');
-        tododiv.classList.add('tododiv');
-        tododiv.setAttribute("id", todos[i].index);
-
-        const checkbox = document.createElement("INPUT");
-        checkbox.setAttribute("type", "checkbox");
-        checkbox.setAttribute("value", "checkbox");
-        checkbox.classList.add('checkbox');
-        checkbox.addEventListener('click',changecompleted);
-        tododiv.appendChild(checkbox)
-
-        const titlediv = document.createElement('div');
-        titlediv.textContent = todos[i].title;
-        titlediv.classList.add('titlediv')
-        tododiv.appendChild(titlediv);
-
-        const timeTodo = document.createElement('div');
-        timeTodo.textContent = todos[i].date
-        timeTodo.classList.add('dueDate')
-        tododiv.appendChild(timeTodo);
-
-        const now = new Date();
-        if (now < todos[i].dueDate) tododiv.classList.add('.timeout')
-
-        const prio = todos[i].priority
-        if (prio === "Low") timeTodo.classList.add('lowprio');
-        if (prio === "Medium") timeTodo.classList.add('mediumprio');
-        if (prio === "High") timeTodo.classList.add('highprio');
-            
-        const editTodo = document.createElement('BUTTON');
-        editTodo.classList.add('editbtn');
-        editTodo.addEventListener('click', editform, false)
-        tododiv.appendChild(editTodo);
-
-        const delTodo = document.createElement('BUTTON');
-        delTodo.classList.add('delbtn');
-        delTodo.addEventListener('click',submitdel , false)
-        tododiv.appendChild(delTodo);
-
-        maincontent.appendChild(tododiv);
-
-        }   
-    }
-    const addbtn = document.createElement('BUTTON');
-    addbtn.textContent = 'ADD TASK';
-    addbtn.classList.add('addbtn');
-    addbtn.addEventListener('click', addform, false);
-    maincontent.appendChild(addbtn);
+  const addbtn = document.createElement('button');
+  addbtn.textContent = 'Add Task';
+  addbtn.classList.add('addbtn');
+  addbtn.addEventListener('click', addform);
+  maincontent.appendChild(addbtn);
 }
+
 function addform() {
-    var currentForm = document.querySelector('#currentform')
-    if ( currentForm !== null) return alert('Please close other form.');
-    const form = createForm()
-    const value = this.parentNode;
-    value.replaceChild(form,this);
-    document.getElementById("formTitle").defaultValue = lastProject;
+  const currentForm = document.querySelector('#currentform');
+  if (currentForm) return alert('Please close other form.');
+  const form = createForm();
+  this.parentNode.replaceChild(form, this);
+  document.getElementById('formTitle').defaultValue = lastProject;
+  document.getElementById('formDetails').placeholder = 'Task';
+  document.getElementById('formTitle').placeholder = 'Category';
 }
+
 let editindex = ""
 function editform() { 
     var currentForm = document.querySelector('#currentform');
@@ -358,11 +365,13 @@ function timesort() {
 
     console.log(lastProject)
 }
-// function addproject() {
-//     const main = document.querySelector('maincontainer');
-//     var currentForm = document.querySelector('#currentform')
-//     if ( currentForm !== null) return alert('Please close other form.');
-//     const form = createForm()
-//     main.appendChild(form)
-// }
+function addproject() {
+    // Append form to sidebar where the button is
+    const sidebar = document.querySelector('.sidebar');
+    var currentForm = document.querySelector('#currentform');
+    if (currentForm !== null) return alert('Please close other form.');
+    const form = createForm();
+    sidebar.appendChild(form);
+}
+
 export {baseDOM, rendertodos, cancel, submit}
