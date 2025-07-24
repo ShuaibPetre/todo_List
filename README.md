@@ -1,6 +1,8 @@
 📝 To-Do List App
 A modular, minimalist To-Do List App built with vanilla JavaScript. It lets you organize your tasks by projects, dates, and priorities — all without any front-end frameworks.
 
+![Todo App Screenshot](./screenshot.png)
+
 ✨ Features
 📌 Project-Based Task Organization
 Create and manage tasks under custom project categories.
